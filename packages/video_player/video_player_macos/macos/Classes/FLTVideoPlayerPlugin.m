@@ -567,8 +567,13 @@ static CVReturn OnDisplayLink(CVDisplayLinkRef CV_NONNULL displayLink,
     player = [[FLTVideoPlayer alloc] initWithURL:[NSURL URLWithString:input.uri]
                                     frameUpdater:frameUpdater];
     return [self onPlayerSetup:player frameUpdater:frameUpdater];
+  } else if (input.asset) {
+      NSURL *assetURL = [[NSBundle mainBundle] URLForResource: input.asset withExtension:nil];
+      player = [[FLTVideoPlayer alloc] initWithURL:assetURL
+                                      frameUpdater:frameUpdater];
+      return [self onPlayerSetup:player frameUpdater:frameUpdater];
   } else {
-    *error = [FlutterError errorWithCode:@"video_player" message:@"not implemented" details:nil];
+    *error = [FlutterError errorWithCode:@"video_player" message:@"this video loading mechanism is not implemented" details:nil];
     return nil;
   }
 }
